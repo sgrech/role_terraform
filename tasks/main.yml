@@ -1,2 +1,17 @@
 ---
-# tasks file for role_terraform
+- name: Import terraform apt key
+  apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    state: present
+
+- name: Add terraform apt repo
+  apt_repository:
+    repo: "deb [arch=amd64] https://apt.releases.hashicorp.com {{ host_distribution_release if host_distribution_release is defined else ansible_distribution_release }} main"
+    state: present
+    update_cache: yes
+
+- name: Install terraform
+  apt:
+    name:
+      - terraform
+
